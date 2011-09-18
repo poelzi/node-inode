@@ -1,0 +1,26 @@
+{ "name": "inode"
+, "description": "inode is a better interactive shell"
+, "version": "0.0.1"
+, "homepage": "https://github.com/poelzi/node-inode"
+, "author": "poelzi (http://poelzi.org)"
+, "repository": {"type": "git", "url": "git://github.com/poelzi/node-inode.git"}
+, "bin": "bin/inode"
+, "engines": {"node": "0.4.x"}
+, "keywords": ["cache", "async", "redis"]
+, "scripts": {
+    "preinstall": "#preinstall DO NOTHING",
+    "install": "node-waf configure build",
+    "update": "node-waf build",
+    "test": "node-waf && ./node_modules/nodeunit/bin/nodeunit test"}
+, "dependencies": {
+    "coffee-script": ">= 1.1.1",
+    "eyes":          "*",
+    "colors":        "*",
+    "async":         "0.1.x",
+    "eyes":          "0.1.x",
+    "quack-array":   "0.0.x"
+  }
+, "devDependencies": {
+    "nodeunit":      "0.5.x"
+  }
+}
