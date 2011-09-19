@@ -105,8 +105,26 @@ shell.defineCommand 'req',
     action: (args) ->
         args = args.split(" ")
         if args.length == 1
-            self.eval args[0] + " = require('" + args[0] + "');", self.context, 'repl', (e, ret) ->
+            run = args[0] + " = require('" + args[0] + "');"
+            self.eval run, self.context, 'repl', (e, ret) ->
+                self.outputStream.write(run + "\n")
                 nice_error(e)
         else if args.length == 2
+            run = args[0] + " = require('" + args[1] + "');"
             self.eval args[0] + " = require('" + args[1] + "');", self.context, 'repl', (e, ret) ->
+                self.outputStream.write(run + "\n")
                 nice_error(e)
+
+shell.defineCommand 'reload',
+    help: 'reload a module: .reload [variable]',
+    action: (args) ->
+        run = """var key = null;
+                 for(key in require.cache) {
+                     console.log("key")
+                     if(require.cache[key] == """ + args + """) { 
+                         require.cache[key] = undefined; break  }
+                 }; console.log(key); if(key) {""" + args + """ = require(key);} else { console.log("can't find module"); }"""
+        #console.log(run)
+        self.eval run, self.context, 'repl', (e, ret) ->
+            #nice_error(e)
+            #console.log(e, ret)
