@@ -30,11 +30,12 @@ old_history = []
 
 command_nr = 0
 
+
 nice_error = (err) ->
     return if not err
-    self.rli.write('\n')
-    self.rli.write('Caught exception: '.red.bold + err.message.red + "\n")
-    self.rli.write(String(err.stack) + "\n")
+    self.outputStream.write('\n')
+    self.outputStream.write('Caught exception: '.red.bold + err.message.red + "\n")
+    self.outputStream.write(String(err.stack) + "\n")
     self.rli.prompt()
 
 
@@ -71,7 +72,8 @@ shell.eval ?= (code, context, file, cb) ->
 
 
 shell.rli.on 'SIGINT', () ->
-    self.rli.write('\n(^C abort command)'.red)
+    if self.bufferedCommand.length == 0
+        self.outputStream.write('\n(^C abort command. Press ^D to exit.)'.red)
     
     self.rli.line = ''
     self.rli.write('\n')
