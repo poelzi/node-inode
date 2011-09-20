@@ -1,6 +1,6 @@
 { "name": "inode"
 , "description": "inode is a better interactive shell"
-, "version": "0.0.1"
+, "version": "0.0.2"
 , "homepage": "https://github.com/poelzi/node-inode"
 , "author": "poelzi (http://poelzi.org)"
 , "repository": {"type": "git", "url": "git://github.com/poelzi/node-inode.git"}
