@@ -17,7 +17,7 @@ def configure(ctx):
 def build(ctx):
     env = Dummy()
     env.variant = lambda: ""
-    for top in ("src", "test"):
+    for top in ("src",):
         for file in ctx.path.find_dir(top).ant_glob("**/*.coffee", flat=False):
             #print file.change_ext(".js").bldpath(env)
             tgtpath = file.change_ext(".js").bldpath(env)
