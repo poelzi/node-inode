@@ -23,6 +23,7 @@ config_base = path.join(process.env.HOME, ".config", "inode")
 history_file = path.join(config_base, "history")
 history = null
 util = require 'util'
+child_process = require 'child_process'
 
 log = eyes.inspector()
 
@@ -128,3 +129,16 @@ shell.defineCommand 'reload',
         self.eval run, self.context, 'repl', (e, ret) ->
             #nice_error(e)
             #console.log(e, ret)
+
+shell.defineCommand '!',
+    help: 'executes command',
+    action: (args) ->
+        child = child_process.exec args
+        child.stdout.on 'data', (data) ->
+            self.outputStream.write data
+        child.stderr.on 'data', (data) ->
+            self.outputStream.write data
+        child.on 'exit', (code) ->
+            if Number(code) != 0
+                self.outputStream.write "program exited with error code " + code + "\n"
+            self.rli.prompt()
