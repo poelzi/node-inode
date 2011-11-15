@@ -42,7 +42,7 @@ nice_error = (err) ->
 
 process.on 'uncaughtException', nice_error
 
-shell = repl.start("> ")
+shell = repl.start("")
 
 # fix the most annoying default sigint handler
 shell.rli.removeAllListeners('SIGINT')
@@ -60,9 +60,6 @@ mkdirp config_base, 0755, (err) ->
         for line in dat
             self.rli.history.unshift String(line)
         self.rli.history_index = -1
-
-shell.rli.write("inode".yellow.bold + " type ".grey + ".help".white.bold + " for help".grey + "\n")
-shell.rli.bufferedCommand = ""
 
 shell.eval ?= (code, context, file, cb) ->
     try
@@ -90,7 +87,14 @@ shell.rli.on 'line', (line) ->
             buf = new Buffer(line + "\n")
             fs.write(history, buf, 0, buf.length, null)
 
+first_run = true
+
 shell.displayPrompt = () ->
+    if first_run
+        first_run = false
+        self.outputStream.write("inode".yellow.bold + " type ".grey + ".help".white.bold + " for help".grey + "\n")
+        self.bufferedCommand = ""
+        shell.rli.prompt()
     if self.bufferedCommand.length
         self.rli.setPrompt('... '.white, 4)
     else
