@@ -49,7 +49,7 @@ shell.rli.removeAllListeners('SIGINT')
 
 self = shell
 
-mkdirp config_base, 0755, (err) ->
+mkdirp config_base, 0o0755, (err) ->
     fs.open history_file, "a+", (err, fd) ->
         history = fd
 
